@@ -61,6 +61,7 @@ dependencies {
     kapt "androidx.room:room-compiler:$rootProject.roomVersion"
     androidTestImplementation "androidx.room:room-testing:$rootProject.roomVersion"
     implementation 'org.jetbrains.anko:anko-common:0.10.0'
+    implementation "androidx.viewpager2:viewpager2:1.0.0-alpha04"
 
 
 }
