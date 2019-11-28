@@ -71,16 +71,21 @@ class MainActivity : AppCompatActivity() {
         adapter = adapter(this@MainActivity, object : adapter.OnItemClick {
             @RequiresApi(Build.VERSION_CODES.M)
             override fun onClicklisneter(pos: Int, name: String) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                    permissionLocation()
-                else {
-                    val intent = Intent(this@MainActivity, MapActivity::class.java)
-                    intent.putExtra("lat", "23.0272300")
-                    intent.putExtra("lng", "72.5616200")
-                    intent.putExtra("name", movieList[pos]!!.title)
+                val intent = Intent(this@MainActivity, DetailActivity::class.java)
+                intent.putExtra("movie", localList)
 
-                    startActivity(intent)
-                }
+                startActivity(intent)
+
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+//                    permissionLocation()
+//                else {
+//                    val intent = Intent(this@MainActivity, MapActivity::class.java)
+//                    intent.putExtra("lat", "23.0272300")
+//                    intent.putExtra("lng", "72.5616200")
+//                    intent.putExtra("name", movieList[pos]!!.title)
+//
+//                    startActivity(intent)
+//                }
             }
 
         }, movieList)

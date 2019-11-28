@@ -50,8 +50,8 @@ class adapter(
         ) =
             with(itemView) {
                 tvTitle.text=movie?.title.toString()
-                tvyear.text=movie?.year.toString()
                 sdPoster.setImageURI(movie?.poster)
+                sdPoster2.setImageURI("http://192.249.121.94/~mobile/interview/public/images/csm_shutterstock_73748515_01_cf1fd34057_519ffe33ac.jpg\"")
                 ll_main.tag=position
                 ll_main.setOnClickListener {
                     onItemClick.onClicklisneter(it.tag as Int,"item")
