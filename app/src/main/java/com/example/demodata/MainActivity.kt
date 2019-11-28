@@ -30,41 +30,40 @@ class MainActivity : AppCompatActivity() {
 
     var adapter: adapter? = null
     var movieList: ArrayList<Movie?> = ArrayList()
-    var moviewListViewModel: MovieListViewModel? = null
     private val REQUEST_CODE_Location_PERMISSIONS = 6
     var db: AppDatabase? = null
-
+    var localList: ArrayList<Movie> = ArrayList()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         db = AppDatabase.getDatabase(this!!)
-
         initialization()
+        getDataFromLocal()
 
-        getMovie()
-
-
-        btnRetry.setOnClickListener {
-            getMovie()
-        }
+//        btnRetry.setOnClickListener {
+//            getMovie()
+//        }
     }
 
     private fun getDataFromLocal() {
         doAsync {
-            var myItemList = db?.orderLog()?.getAll()!! as ArrayList<Movie>
+            localList = db?.orderLog()?.getAll()!! as ArrayList<Movie>
             uiThread {
-            Log.e("list size is",myItemList.size.toString())
-                Log.e("data",myItemList[0].title)
+                if (localList.isNullOrEmpty())
+                    getMovie()
+                else {
+                    movieList.clear()
+                    movieList.addAll(localList)
+                    adapter?.notifyDataSetChanged()
+                    Log.e("data", localList[0].title)
+                    Log.e("list size is", localList.size.toString())
+                }
+//
 
             }
         }
     }
 
-    /**
-     * initialization of views and others
-     *
-     * @param @null
-     */
     private fun initialization() {
 
         recycleView.setLayoutManager(LinearLayoutManager(this))
@@ -86,10 +85,8 @@ class MainActivity : AppCompatActivity() {
 
         }, movieList)
         recycleView.setAdapter(adapter)
-        recycleView.loadingStateView = progressbar
-        recycleView.errorStateView = errorView
+
         // View Model
-        moviewListViewModel = ViewModelProviders.of(this).get(MovieListViewModel::class.java)
 
     }
 
@@ -99,18 +96,16 @@ class MainActivity : AppCompatActivity() {
      * @param @null
      */
     private fun getMovie() {
-
-
-        recycleView.stateViewState = MyRecycleView.RecyclerViewStateEnum.LOADING
-
-
+       var  moviewListViewModel = ViewModelProviders.of(this).get(MovieListViewModel::class.java)
+//        recycleView.stateViewState = MyRecycleView.RecyclerViewStateEnum.LOADING
         moviewListViewModel?.getMovieListResponseLiveData()?.observe(this, Observer {
             if (it != null) {
                 movieList.addAll(it.search)
-                insertIntoLocalDb()
+                if (localList.isNullOrEmpty())
+                    insertIntoLocalDb()
                 adapter?.notifyDataSetChanged()
             } else {
-                recycleView.stateViewState = MyRecycleView.RecyclerViewStateEnum.ERROR
+//                recycleView.stateViewState = MyRecycleView.RecyclerViewStateEnum.ERROR
             }
 
         })
@@ -118,12 +113,13 @@ class MainActivity : AppCompatActivity() {
 
     fun insertIntoLocalDb() {
         doAsync {
-                db?.orderLog()?.insert(movieList[0]!!)
+            for (i in 0 until movieList.size)
+                db?.orderLog()?.insert(movieList[i]!!)
 
 
-        uiThread {
-            getDataFromLocal()
-        }
+            uiThread {
+                getDataFromLocal()
+            }
         }
     }
 

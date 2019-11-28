@@ -167,7 +167,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback,
             setPickupMarker(pickuplatlong.latitude.toDouble(), pickuplatlong.longitude.toDouble())
             setDropMarker(dropDestination.latitude.toDouble(), dropDestination.longitude.toDouble())
 
-            blackPolyLine = mMap.addPolyline(getPolyLineOption(Color.BLACK, points))
+            blackPolyLine = mMap.addPolyline(getPolyLineOption(Color.RED, points))
             moveToBounds(blackPolyLine!!)
         }
 

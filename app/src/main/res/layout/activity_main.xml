@@ -7,7 +7,7 @@
     tools:context=".MainActivity">
 
 
-    <com.example.demodata.MyRecycleView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycleView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -16,7 +16,7 @@
         app:layout_constraintVertical_bias="1.0"
         />
 
-    <androidx.core.widget.ContentLoadingProgressBar
+   <!-- <androidx.core.widget.ContentLoadingProgressBar
         android:id="@+id/progressbar"
         android:layout_width="45dp"
         android:layout_height="45dp"
@@ -35,5 +35,5 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/recycleView"
-        ></include>
+        ></include>-->
 </androidx.constraintlayout.widget.ConstraintLayout>
